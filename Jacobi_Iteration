@@ -1,0 +1,208 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+#include <stdbool.h>
+
+//main function
+int main(void)
+{
+  //initialize variables
+  int iteration, a, b, i = 0, count = 0; 
+  float epsilon, top, right, bottom, left, difference, absoluteDifference, maximum = 0;
+
+  
+
+  //prompt user for number of iterations
+  printf("How many iterations?\n");
+  scanf("%d", &iteration);
+
+  if (iteration <= 0)
+  {
+    printf("Error\n");
+    exit(0);
+  }
+
+  //prompt user for the epsilon value
+  printf("What is the Epsilon value (ranging from 0.001 to 0.1)?\n");
+  scanf("%f", &epsilon);
+
+  if (epsilon < 0.001 || epsilon > 0.1)
+  {
+    printf("Error\n");
+    exit(0);
+  }
+
+  //prompt user for the sides
+  printf("What are the sides in order of top, right, bottom, and left?\n");
+  scanf("%f%f%f%f", &top, &right, &bottom, &left);
+
+  //initialize a 10x10 grid for matrix 1 and matrix 2
+  float matrix1[10][10] = {{1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+                           {1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                           {1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                           {1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                           {1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                           {1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                           {1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                           {1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                           {1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                           {1, 0, 0, 0, 0, 0, 0, 0, 0, 0}};
+
+  float matrix2[10][10] = {{1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+                           {1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                           {1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                           {1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                           {1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                           {1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                           {1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                           {1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                           {1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                           {1, 0, 0, 0, 0, 0, 0, 0, 0, 0}}; 
+
+  matrix1[0][0] = top;
+  matrix1[0][1] = top;
+  matrix1[0][2] = top;
+  matrix1[0][3] = top;
+  matrix1[0][4] = top;
+  matrix1[0][5] = top;
+  matrix1[0][6] = top;
+  matrix1[0][7] = top;
+  matrix1[0][8] = top;
+  matrix1[0][9] = top;
+  matrix1[0][10] = top;
+
+  matrix1[1][9] = right;
+  matrix1[2][9] = right;
+  matrix1[3][9] = right;
+  matrix1[4][9] = right;
+  matrix1[5][9] = right;
+  matrix1[6][9] = right;
+  matrix1[7][9] = right;
+  matrix1[8][9] = right;
+
+  matrix1[9][1] = bottom;
+  matrix1[9][2] = bottom;
+  matrix1[9][3] = bottom;
+  matrix1[9][4] = bottom;
+  matrix1[9][5] = bottom;
+  matrix1[9][6] = bottom;
+  matrix1[9][7] = bottom;
+  matrix1[9][8] = bottom;
+  matrix1[9][9] = bottom;
+
+  matrix1[1][0] = left;
+  matrix1[2][0] = left;
+  matrix1[3][0] = left;
+  matrix1[4][0] = left;
+  matrix1[5][0] = left;
+  matrix1[6][0] = left;
+  matrix1[7][0] = left;
+  matrix1[8][0] = left;
+  matrix1[9][0] = left;
+
+  matrix2[0][0] = top;
+  matrix2[0][1] = top;
+  matrix2[0][2] = top;
+  matrix2[0][3] = top;
+  matrix2[0][4] = top;
+  matrix2[0][5] = top;
+  matrix2[0][6] = top;
+  matrix2[0][7] = top;
+  matrix2[0][8] = top;
+  matrix2[0][9] = top;
+  matrix2[0][10] = top;
+
+  matrix2[1][9] = right;
+  matrix2[2][9] = right;
+  matrix2[3][9] = right;
+  matrix2[4][9] = right;
+  matrix2[5][9] = right;
+  matrix2[6][9] = right;
+  matrix2[7][9] = right;
+  matrix2[8][9] = right;
+
+  matrix2[9][1] = bottom;
+  matrix2[9][2] = bottom;
+  matrix2[9][3] = bottom;
+  matrix2[9][4] = bottom;
+  matrix2[9][5] = bottom;
+  matrix2[9][6] = bottom;
+  matrix2[9][7] = bottom;
+  matrix2[9][8] = bottom;
+  matrix2[9][9] = bottom;
+
+  matrix2[1][0] = left;
+  matrix2[2][0] = left;
+  matrix2[3][0] = left;
+  matrix2[4][0] = left;
+  matrix2[5][0] = left;
+  matrix2[6][0] = left;
+  matrix2[7][0] = left;
+  matrix2[8][0] = left;
+  matrix2[9][0] = left;
+
+  do
+  {
+    maximum = 0;
+    //get the average of top, left, bottom, right of each value
+    for (a = 1; a < 9; a++)
+    {
+      for (b = 1; b < 9; b++)
+      {
+        matrix2[a][b] = (matrix1[a-1][b] + matrix1[a+1][b] + matrix1[a][b-1] + matrix1[a][b+1]) * 0.25;
+      }
+    }
+
+    //finds the differences in the array
+    for (a = 1; a < 9; a++)
+    {
+      for (b = 1; b < 9; b++)
+      {
+        difference = matrix1[a][b] - matrix2[a][b];
+        absoluteDifference = (float)fabs(difference);
+        if(absoluteDifference > maximum)
+        {
+          maximum = absoluteDifference;
+
+        } 
+      }
+    }
+
+    //imports all values from matrix 2 to matrix 1
+    for (a = 1; a < 9; a++)
+    {
+      for (b = 1; b < 9; b++)
+      {
+        matrix1[a][b] = matrix2[a][b];
+      }
+    }
+
+    count++;
+  } while (maximum > epsilon && count < iteration);
+  
+  //results for convergence
+  if (maximum < epsilon) 
+   printf("Convergence in %d steps\n", count);
+  else if (count > iteration)
+  {
+   printf("No convergence was met\n");
+   printf("Iteration: %d\n", count);
+  }
+  
+  //printing out matrix 1 (results)
+  for (a = 0; a < 10; a++)
+  {
+    for (b = 0; b < 10; b++)
+    {
+      printf("%.2f", matrix1[a][b]);
+      printf(" ");
+    }
+    printf("\n");
+  }
+  printf("\n");
+
+  //print the error tolerance
+  printf("error tolerance: %f\n", maximum);
+}
+
+
