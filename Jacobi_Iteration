@@ -26,7 +26,7 @@ int main(void)
   printf("What is the Epsilon value (ranging from 0.001 to 0.1)?\n");
   scanf("%f", &epsilon);
 
-  if (epsilon < 0.001 || epsilon > 0.1)
+  if (epsilon < 0.001 && epsilon > 0.1)
   {
     printf("Error\n");
     exit(0);
